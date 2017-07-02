@@ -1,0 +1,34 @@
+{
+  "name": "nuxtjs-rfg-icon",
+  "version": "0.0.0",
+  "license": "MIT",
+  "description": "nuxtjs module for creating favicons through RealFaviconGenerator",
+  "repository": "https://github.com/pimlie/nuxtjs-rfg-icon",
+  "homepage": "https://github.com/pimlie/nuxtjs-rfg-icon",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint --ext .js,.vue .",
+    "lint-fix": "eslint --ext .js,.vue --fix"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@nuxtjs/manifest": "^1.6.0",
+    "axios": "^0.16.2",
+    "lodash": "^4.17.4",
+    "path": "^0.12.7",
+    "rfg-api": "^0.3.0",
+    "unzip2": "^0.2.5"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.1.1",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-html": "^3.0.0",
+    "eslint-plugin-import": "^2.6.1",
+    "eslint-plugin-node": "^5.1.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1"
+  }
+}
