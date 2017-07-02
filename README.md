@@ -22,7 +22,10 @@
 
    // or use global options
    'rfg-icon': {
+      static: true,
+      staticPath: '/_favicons/',
       masterPicture: 'static/icon.png',
+      rfg: <faviconDescription.json from realfavicongenerator.net>
    }
   ]
 ````
@@ -30,10 +33,79 @@
 
 ## Options
 
-### masterPicture
+### `masterPicture`
 - Default: `[srcDir]/static/icon.png`
 
-### other options
+### `static`
+- Default: `false`
 
-See [realfavicongenerator.net](https://realfavicongenerator.net/) for a full list of options. Easiest is uploading your image on the website and choose your settings. Next click on `Generate favicons`, click on the tab `Node CLI` and copy the contents of the `faviconDescription.json` file to your `nuxt.config.js`
+If true, icon files will be unzipped to the `staticPath` folder instead of added as assets. The headers to be added are saved as `headers.json`. If headers.json and manifest.json exists while building, the existing files are used and not retrieved from the RealFaviconGenerator api unless `force` is ticked
 
+### `staticPath`
+- Default: `icons`
+
+The static path where the favicons will be saved if `static` is enabled`
+
+### `force`
+- Default: `false`
+
+If true and static files is enabled, force to retrieve new favicons from the RealFaviconGenerator api even when `headers.json` and `manifest.json` exist
+
+### `rfg`
+The faviconDescription configuration from [realfavicongenerator.net](https://realfavicongenerator.net/). Upload your image on the website and choose your settings. Next click on `Generate favicons`, click on the tab `Node CLI` and copy the contents of the `faviconDescription.json` file to your `nuxt.config.js`
+
+- Default
+```js
+rfg: {
+  design: {
+    ios: {
+      pictureAspect: 'backgroundAndMargin',
+      backgroundColor: '#ffffff',
+      margin: '14%',
+      assets: {
+        ios6AndPriorIcons: false,
+        ios7AndLaterIcons: false,
+        precomposedIcons: false,
+        declareOnlyDefaultIcon: true
+      }
+    },
+    desktopBrowser: {},
+    windows: {
+      pictureAspect: 'whiteSilhouette',
+      backgroundColor: '#ffffff',
+      onConflict: 'override',
+      assets: {
+        windows80Ie10Tile: false,
+        windows10Ie11EdgeTiles: {
+          small: false,
+          medium: true,
+          big: false,
+          rectangle: false
+        }
+      }
+    },
+    androidChrome: {
+      pictureAspect: 'noChange',
+      themeColor: '#ffffff',
+      manifest: {
+        display: 'standalone',
+        orientation: 'notSet',
+        onConflict: 'override',
+        declared: true
+      },
+      assets: {
+        legacyIcon: false,
+        lowResolutionIcons: false
+      }
+    },
+    safariPinnedTab: {
+      pictureAspect: 'silhouette',
+      themeColor: '#5bbad5'
+    }
+  },
+  settings: {
+    scalingAlgorithm: 'Mitchell',
+    errorOnImageTooSmall: false
+  }
+}
+```
