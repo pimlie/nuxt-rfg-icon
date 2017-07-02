@@ -3,6 +3,9 @@ const path = require('path')
 const rfg = require('rfg-api').init()
 const axios = require('axios')
 const unzip = require('unzip2')
+const debug = require('debug')('rfg-icon')
+debug.enabled = true
+debug.color = 5
 
 const defaults = {
   // sent email about apikeys, no response yet
@@ -64,6 +67,8 @@ const fixUrl = url => url.replace(/\/\//g, '/').replace(':/', '://')
 const isUrl = url => url.indexOf('http') === 0 || url.indexOf('//') === 0
 
 module.exports = function nuxtRfgIcon (options) {
+  debug('Retrieving favicons from realfavicongenerator api')
+
   let faviconDescription = defaultsDeep(this.options['rfg-icon'] || options || {}, defaults)
 
   faviconDescription.masterPicture = faviconDescription.masterPicture || path.resolve(this.options.srcDir, 'static', 'icon.png')
@@ -176,8 +181,10 @@ module.exports = function nuxtRfgIcon (options) {
         })
       }
     })
+
+    debug('Finished saving favicons')
   }).catch(err => {
-    console.error('[rfg-icon] error communicating with rfg api', err) // eslint-disable-line no-console
+    debug('[rfg-icon] error communicating with rfg api', err) // eslint-disable-line no-console
   })
 }
 

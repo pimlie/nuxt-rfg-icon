@@ -16,6 +16,7 @@
   "dependencies": {
     "@nuxtjs/manifest": "^1.6.0",
     "axios": "^0.16.2",
+    "debug": "^2.6.8",
     "lodash": "^4.17.4",
     "path": "^0.12.7",
     "rfg-api": "^0.3.0",
