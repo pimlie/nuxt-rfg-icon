@@ -1,6 +1,6 @@
-# RealFaviconGenerator Favicon's
-[![npm](https://img.shields.io/npm/dt/@nuxtjs/rfg-icon.svg?style=flat-square)](https://www.npmjs.com/package/nuxtjs-rfg-icon)
-[![npm (scoped with tag)](https://img.shields.io/npm/v/@nuxtjs/rfg-icon/latest.svg?style=flat-square)](https://www.npmjs.com/package/nuxtjs-rfg-icon)
+# RealFaviconGenerator Favicon's for NUXT
+[![npm](https://img.shields.io/npm/dt/nuxt-rfg-icon.svg?style=flat-square)](https://www.npmjs.com/package/nuxt-rfg-icon)
+[![npm (scoped with tag)](https://img.shields.io/npm/v/nuxt-rfg-icon/latest.svg?style=flat-square)](https://www.npmjs.com/package/nuxt-rfg-icon)
 
 > Automatically generates favicons and app icons with different sizes using [rfg-api](https://github.com/RealFaviconGenerator/rfg-api).
 
@@ -8,17 +8,17 @@
 - The generated manifest.json is added to `@nuxtjs/manifest`, so should not overwrite existing properties
 
 ## Setup
-- Install from npm `npm install --save nuxtjs-rfg-icon` or use yarn
-- Add `nuxtjs-rfg-icon` to `modules` section of `nuxt.config.js` *before* the line `@nuxtjs/manifest`
+- Install from npm `npm install --save nuxt-rfg-icon` or use yarn
+- Add `nuxt-rfg-icon` to `modules` section of `nuxt.config.js` *before* the line `@nuxtjs/manifest`
 
 ```js
   modules: [
     // Simple usage
-   'nuxtjs-rfg-icon',
+   'nuxt-rfg-icon',
    '@nuxtjs/manifest', 
    
    // With options
-   ['nuxtjs-rfg-icon', { masterPicture: '' }],
+   ['nuxt-rfg-icon', { masterPicture: '' }],
 
    // or use global options
    'rfg-icon': {
