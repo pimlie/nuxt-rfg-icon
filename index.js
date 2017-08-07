@@ -11,7 +11,7 @@ module.exports.meta = require('./package.json')
 const Debug = require('debug')
 const debug = Debug('plugin:' + module.exports.meta.name)
 debug.enabled = true
-debug.color = 5*
+debug.color = 5
 
 const error = Debug('plugin:' + module.exports.meta.name)
 error.enabled = true
