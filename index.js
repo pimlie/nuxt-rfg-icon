@@ -1,85 +1,87 @@
-const { find, defaultsDeep } = require('lodash')
+const { find, defaults, defaultsDeep } = require('lodash')
 const fs = require('fs')
 const mkdirp = require('mkdirp')
 const path = require('path')
 const rfg = require('rfg-api').init()
 const axios = require('axios')
 const unzip = require('unzip2')
+
+module.exports.meta = require('./package.json')
+
 const Debug = require('debug')
-
-const debug = Debug('plugin:rfg-icon')
+const debug = Debug('plugin:' + module.exports.meta.name)
 debug.enabled = true
-debug.color = 5
+debug.color = 5*
 
-const error = Debug('plugin:rfg-icon')
+const error = Debug('plugin:' + module.exports.meta.name)
 error.enabled = true
 error.color = 1
 
-const defaults = {
-  // sent email about apikeys, no response yet
-  // taken from https://github.com/RealFaviconGenerator/cli-real-favicon/blob/master/common.js
-  apiKey: '402333a17311c9aa68257b9c5fc571276090ee56',
-  static: false,
-  staticPath: 'icons',
-  force: false,
-  rfg: {
-    design: {
-      ios: {
-        pictureAspect: 'backgroundAndMargin',
-        backgroundColor: '#ffffff',
-        margin: '14%',
-        assets: {
-          ios6AndPriorIcons: false,
-          ios7AndLaterIcons: false,
-          precomposedIcons: false,
-          declareOnlyDefaultIcon: true
-        }
-      },
-      desktopBrowser: {},
-      windows: {
-        pictureAspect: 'whiteSilhouette',
-        backgroundColor: '#ffffff',
-        onConflict: 'override',
-        assets: {
-          windows80Ie10Tile: false,
-          windows10Ie11EdgeTiles: {
-            small: false,
-            medium: true,
-            big: false,
-            rectangle: false
+module.exports = function nuxtRfgIcon (options) {
+  const fixUrl = url => url.replace(/\/\//g, '/').replace(':/', '://')
+  const isUrl = url => url.indexOf('http') === 0 || url.indexOf('//') === 0
+
+  const rfg_defaults = {
+    // sent email about apikeys, no response yet
+    // taken from https://github.com/RealFaviconGenerator/cli-real-favicon/blob/master/common.js
+    apiKey: '402333a17311c9aa68257b9c5fc571276090ee56',
+    static: false,
+    staticPath: 'icons',
+    force: false,
+    rfg: {
+      design: {
+        ios: {
+          pictureAspect: 'backgroundAndMargin',
+          backgroundColor: '#ffffff',
+          margin: '14%',
+          assets: {
+            ios6AndPriorIcons: false,
+            ios7AndLaterIcons: false,
+            precomposedIcons: false,
+            declareOnlyDefaultIcon: true
           }
-        }
-      },
-      androidChrome: {
-        pictureAspect: 'noChange',
-        themeColor: '#ffffff',
-        manifest: {
-          display: 'standalone',
-          orientation: 'notSet',
-          onConflict: 'override',
-          declared: true
         },
-        assets: {
-          legacyIcon: false,
-          lowResolutionIcons: false
+        desktopBrowser: {},
+        windows: {
+          pictureAspect: 'whiteSilhouette',
+          backgroundColor: '#ffffff',
+          onConflict: 'override',
+          assets: {
+            windows80Ie10Tile: false,
+            windows10Ie11EdgeTiles: {
+              small: false,
+              medium: true,
+              big: false,
+              rectangle: false
+            }
+          }
+        },
+        androidChrome: {
+          pictureAspect: 'noChange',
+          themeColor: '#ffffff',
+          manifest: {
+            display: 'standalone',
+            orientation: 'notSet',
+            onConflict: 'override',
+            declared: true
+          },
+          assets: {
+            legacyIcon: false,
+            lowResolutionIcons: false
+          }
+        },
+        safariPinnedTab: {
+          pictureAspect: 'silhouette',
+          themeColor: '#5bbad5'
         }
       },
-      safariPinnedTab: {
-        pictureAspect: 'silhouette',
-        themeColor: '#5bbad5'
+      settings: {
+        scalingAlgorithm: 'Mitchell',
+        errorOnImageTooSmall: false
       }
-    },
-    settings: {
-      scalingAlgorithm: 'Mitchell',
-      errorOnImageTooSmall: false
     }
-  }
 }
 
-const fixUrl = url => url.replace(/\/\//g, '/').replace(':/', '://')
-const isUrl = url => url.indexOf('http') === 0 || url.indexOf('//') === 0
-
-module.exports = function nuxtRfgIcon (options) {
   const generateHeaders = (headers) => {
     // add link and meta's to head
     if (!this.options.head) {
@@ -112,7 +114,7 @@ module.exports = function nuxtRfgIcon (options) {
     return head
   }
 
-  let faviconDescription = defaultsDeep(this.options['rfg-icon'] || options || {}, defaults)
+  let faviconDescription = defaultsDeep(this.options['rfg-icon'] || options || {}, rfg_defaults)
   faviconDescription.staticPath = faviconDescription.staticPath.replace(/^\/*/, '')
 
   if (faviconDescription.static) {
@@ -137,7 +139,7 @@ module.exports = function nuxtRfgIcon (options) {
             if (!this.options[type]) {
               this.options[type] = {}
             }
-            this.options[type] = defaultsDeep(this.options[type], json)
+            this.options[type] = defaults(this.options[type], json)
             resolve()
           })
         }))).then(() => {
@@ -285,5 +287,3 @@ module.exports = function nuxtRfgIcon (options) {
     error('error while communicating with rfg api', err)
   })
 }
-
-module.exports.meta = require('./package.json')
