@@ -8,6 +8,8 @@
 - The generated manifest.json is added to `@nuxtjs/manifest`, so should not overwrite existing properties
 
 ## Setup
+> nuxt-rfg-icon will by default not run in dev mode, set NODE_ENV=production to override
+
 - Install from npm `npm install --save nuxt-rfg-icon` or use yarn
 - Add `nuxt-rfg-icon` to `modules` section of `nuxt.config.js` *before* the line `@nuxtjs/manifest`
 
