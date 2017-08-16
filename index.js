@@ -21,10 +21,10 @@ const fixUrl = url => url.replace(/\/\//g, '/').replace(':/', '://')
 const isUrl = url => url.indexOf('http') === 0 || url.indexOf('//') === 0
 
 module.exports = function nuxtRfgIcon (options) {
-  /* if (this.options.dev && process.env.NODE_ENV !== 'production') {
+  if (this.options.dev && process.env.NODE_ENV !== 'production') {
     debug('plugin is disabled in dev env or set NODE_ENV to \'production\'')
     return
-  } */
+  }
 
   const rfg_defaults = {
     // sent email about apikeys, no response yet
