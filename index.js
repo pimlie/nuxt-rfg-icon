@@ -22,7 +22,7 @@ const isUrl = url => url.indexOf('http') === 0 || url.indexOf('//') === 0
 
 module.exports = function nuxtRfgIcon (options) {
   if (this.options.dev && process.env.NODE_ENV !== 'production') {
-    debug('plugin is disabled in dev env or set NODE_ENV to \'production\'')
+    debug('plugin is disabled in dev mode, set NODE_ENV to \'production\' to override')
     return
   }
 
@@ -85,9 +85,9 @@ module.exports = function nuxtRfgIcon (options) {
         errorOnImageTooSmall: false
       }
     }
-}
+  }
 
-  const generateHeaders = (headers) => {
+  const headersToJson = (headers) => {
     // add link and meta's to head
     if (!this.options.head) {
       this.options.head = {}
@@ -119,11 +119,12 @@ module.exports = function nuxtRfgIcon (options) {
     return head
   }
 
-  this.nuxt.plugin('build', async (builder) => {
-    let faviconDescription = defaultsDeep(this.options['rfg-icon'] || options || {}, rfg_defaults)
-    faviconDescription.staticPath = faviconDescription.staticPath.replace(/^\/*/, '')
+  this.nuxt.plugin('build', builder => {
+    const faviconDescription = defaultsDeep(this.options['rfg-icon'] || options || {}, rfg_defaults)
 
     if (faviconDescription.static) {
+      faviconDescription.staticPath = faviconDescription.staticPath.replace(/^\/*/, '')
+
       let jsonFiles = {
         head: path.resolve(this.options.srcDir, 'static', faviconDescription.staticPath, 'headers.json'),
         manifest: path.resolve(this.options.srcDir, 'static', faviconDescription.staticPath, 'manifest.json')
@@ -132,7 +133,7 @@ module.exports = function nuxtRfgIcon (options) {
       // if headers.json already exists, dont retrieve them again unless forced
       if (fs.existsSync(jsonFiles.manifest) && fs.existsSync(jsonFiles.head)) {
         if (faviconDescription.force) {
-          debug('File headers.json exists but force is enabled')
+          debug('Static files exists but force is enabled')
         } else {
           return Promise.all(Object.keys(jsonFiles).map(type => new Promise((resolve, reject) => {
             fs.readFile(jsonFiles[type], 'utf8', (err, data) => {
@@ -145,7 +146,21 @@ module.exports = function nuxtRfgIcon (options) {
               if (!this.options[type]) {
                 this.options[type] = {}
               }
-              this.options[type] = defaults(this.options[type], json)
+
+              if (type === 'manifest') {
+                this.options[type] = defaults(this.options[type], json)
+              } else {
+                for (var key in json) {
+                  if (!Array.isArray(this.options[type][key])) {
+                    this.options[type][key] = [];
+                  }
+                  for (let i = 0; i < json[key].length; i++) {
+                    let row = json[key][i]
+
+                    this.options[type][key].push(row)
+                  }
+                }
+              }
               resolve()
             })
           }))).then(() => {
@@ -233,7 +248,7 @@ module.exports = function nuxtRfgIcon (options) {
       if (!this.options.head) {
         this.options.head = {}
       }
-      const head = generateHeaders(headers)
+      const head = headersToJson(headers)
       this.options.head = defaultsDeep(this.options.head, head)
 
       // apply manifest to current manifest, use defaults so you can still override values
