@@ -95,7 +95,7 @@ module.exports = function nuxtRfgIcon (options) {
 
     let head = {}
 
-    const re = /(?:\s+)([^=\s]+)(?:=?"?([^>\s"]*))/g
+    const re = /(\S+)=["']?((?:.(?!["']?\s+(?:\S+)=|[>"']))+.)["']?/g
     headers.split('\n').forEach(header => {
       const type = /<([^\s>]+)/.exec(header)[1]
       if (type === 'link' || type === 'meta') {
