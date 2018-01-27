@@ -119,7 +119,7 @@ module.exports = function nuxtRfgIcon (options) {
     return head
   }
 
-  this.nuxt.hook('build', builder => {
+  this.nuxt.hook('build:before', builder => {
     const faviconDescription = defaultsDeep(this.options['rfg-icon'] || options || {}, rfg_defaults)
 
     if (faviconDescription.static) {
