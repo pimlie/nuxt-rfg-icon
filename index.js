@@ -237,7 +237,7 @@ module.exports = function nuxtRfgIcon (options) {
           entry.on('data', (buffer) => { buffers.push(buffer) })
           entry.on('end', () => {
             faviconFiles.push({
-              fileName: entry.path,
+              fileName: entry.path === 'site.webmanifest' ? 'manifest.json' : entry.path,
               buff: Buffer.concat(buffers)
             })
           })
