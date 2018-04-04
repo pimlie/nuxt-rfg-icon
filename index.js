@@ -245,19 +245,36 @@ module.exports = function nuxtRfgIcon (options) {
       })
     }).then(({ faviconFiles, headers }) => {
       // add link and meta's to head
-      if (!this.options.head) {
-        this.options.head = {}
-      }
-      const head = headersToJson(headers)
-      this.options.head = defaultsDeep(this.options.head, head)
+      const options = {}
+      options.head = headersToJson(headers)
 
       // apply manifest to current manifest, use defaults so you can still override values
       const manifest = find(faviconFiles, { fileName: 'manifest.json' })
-      const manifestJson = JSON.parse(manifest.buff.toString('UTF-8'))
-      if (!this.options.manifest) {
-        this.options.manifest = {}
+      options.manifest = JSON.parse(manifest.buff.toString('UTF-8'))
+
+      for (let type in options) {
+        let json = options[type]
+
+        if (!this.options[type]) {
+          this.options[type] = {}
+        }
+
+        if (type === 'manifest') {
+          // apply manifest to current manifest, use defaults so you can still override values
+          this.options[type] = defaults(this.options[type], json)
+        } else {
+          for (var key in json) {
+            if (!Array.isArray(this.options[type][key])) {
+              this.options[type][key] = [];
+            }
+            for (let i = 0; i < json[key].length; i++) {
+              let row = json[key][i]
+
+              this.options[type][key].push(row)
+            }
+          }
+        }
       }
-      this.options.manifest = defaultsDeep(this.options.manifest, manifestJson)
 
       // always save favicon.ico in static root
       const favicon = find(faviconFiles, { fileName: 'favicon.ico' })
