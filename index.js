@@ -286,7 +286,7 @@ module.exports = function nuxtRfgIcon (options) {
 
       if (faviconDescription.static) {
         // add headers
-        faviconFiles.push({fileName: 'headers.json', buff: JSON.stringify(head)})
+        faviconFiles.push({fileName: 'headers.json', buff: JSON.stringify(options.head)})
 
         const iconDir = path.resolve(this.options.srcDir, 'static', faviconDescription.staticPath)
 
