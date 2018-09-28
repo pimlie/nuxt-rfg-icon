@@ -1,1 +1,7 @@
 node_modules
+.nuxt
+coverage
+test/fixture/static/icons
+test/fixture/static/favicon.ico
+yarn-error.log
+

@@ -39,9 +39,9 @@
 - Default: `[srcDir]/static/icon.png`
 
 ### `static`
-- Default: `false`
+- Default: `true`
 
-If true, icon files will be unzipped to the `staticPath` folder instead of added as assets. The headers to be added are saved as `headers.json`. If headers.json and manifest.json exists while building, the existing files are used and not retrieved from the RealFaviconGenerator api unless `force` is ticked
+If false, icon files will be added as webpack assets during each build. There is no intermediate saving. If true, the headers to be added are saved as `headers.json`. If headers.json and manifest.json exists while building, the existing files are used and not retrieved from the RealFaviconGenerator api unless `force` is ticked
 
 ### `staticPath`
 - Default: `icons`
