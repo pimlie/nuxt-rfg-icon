@@ -1,12 +1,9 @@
 const { resolve } = require('path')
 
 module.exports = {
+  dev: false,
   rootDir: resolve(__dirname, '../..'),
   srcDir: __dirname,
-  dev: false,
-  render: {
-    resourceHints: false
-  },
   modules: [
     '@@',
     '@nuxtjs/manifest'

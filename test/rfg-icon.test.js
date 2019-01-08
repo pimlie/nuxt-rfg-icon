@@ -3,18 +3,19 @@ import { resolve } from 'path'
 import { Nuxt, Builder } from 'nuxt'
 import consola from 'consola'
 
-import { cleanup } from './utils'
-import config from './fixture/nuxt.config'
+import { getPort, cleanup } from './utils'
 
 jest.mock('consola')
 global.consola = consola
 consola.withScope.mockImplementation(() => consola)
 
-const port = process.env.PORT || 3000
+let port
 const url = path => `http://localhost:${port}${path}`
 
 describe('rfg-icon module, static', () => {
   let nuxt
+  let builder
+  let buildDone
   const staticPath = resolve(__dirname, './fixture/static/')
 
   const iconDir = 'icons'
@@ -26,7 +27,9 @@ describe('rfg-icon module, static', () => {
 
   beforeAll(async () => {
     await cleanup(iconPathsToCleanup)
+    port = await getPort()
 
+    const config = require('./fixture/nuxt.config')
     config['rfg-icon'] = {
       apiUrl: url('/rfg-api.response.json'),
       rfgApiMetaResponse: require(resolve(config.srcDir, 'rfg-api.response.json')),
@@ -35,8 +38,12 @@ describe('rfg-icon module, static', () => {
     }
 
     nuxt = new Nuxt(config)
-    await new Builder(nuxt).build()
-    await nuxt.listen(port)
+
+    buildDone = jest.fn()
+    nuxt.hook('build:done', buildDone)
+
+    builder = await new Builder(nuxt).build()
+    await nuxt.server.listen(port, 'localhost')
   })
 
   afterAll(async () => {
@@ -47,7 +54,11 @@ describe('rfg-icon module, static', () => {
     jest.clearAllMocks()
   })
 
-  test('check build output', () => {
+  test('check build sucessfull', () => {
+    expect(builder._buildStatus).toBe(2)
+    expect(buildDone).toHaveBeenCalledTimes(1)
+    expect(consola.error).not.toHaveBeenCalled()
+    expect(consola.warn).not.toHaveBeenCalled()
     expect(consola.info).toHaveBeenCalledWith(expect.stringMatching(/Retrieving favicons from realfavicongenerator api/))
     expect(consola.success).toHaveBeenCalledWith(expect.stringMatching(/Finished saving favicons to static folder/))
   })
