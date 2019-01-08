@@ -6,10 +6,8 @@ import consola from 'consola'
 import { cleanup } from './utils'
 import config from './fixture/nuxt.config'
 
-
 jest.mock('consola')
 global.consola = consola
-
 consola.withScope.mockImplementation(() => consola)
 
 const port = process.env.PORT || 3000
