@@ -1,4 +1,5 @@
 # RealFaviconGenerator Favicon's for NUXT
+<a href="https://travis-ci.org/pimlie/nuxt-rfg-icon"><img src="https://api.travis-ci.org/pimlie/nuxt-rfg-icon.svg" alt="Build Status"></a>
 [![npm](https://img.shields.io/npm/dt/nuxt-rfg-icon.svg?style=flat-square)](https://www.npmjs.com/package/nuxt-rfg-icon)
 [![npm (scoped with tag)](https://img.shields.io/npm/v/nuxt-rfg-icon/latest.svg?style=flat-square)](https://www.npmjs.com/package/nuxt-rfg-icon)
 
