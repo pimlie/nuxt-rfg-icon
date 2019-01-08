@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "NODE_ENV=production nuxt test/fixture",
     "lint": "eslint lib test",
+    "release": "yarn lint && yarn test && standard-version",
     "test": "nyc jest test"
   },
   "files": [
