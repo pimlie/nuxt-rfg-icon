@@ -1,18 +1,19 @@
 import { existsSync } from 'fs'
 import { resolve } from 'path'
 import { Nuxt, Builder } from 'nuxt'
-// const consola = require('consola')
-// import module from '../lib/module'
+import consola from 'consola'
 
 import { cleanup } from './utils'
 import config from './fixture/nuxt.config'
 
+
+jest.mock('consola')
+global.consola = consola
+
+consola.withScope.mockImplementation(() => consola)
+
 const port = process.env.PORT || 3000
 const url = path => `http://localhost:${port}${path}`
-
-// mocking consola doesnt work
-const logSpy = jest.fn()
-process.stdout.write = logSpy
 
 describe('rfg-icon module, static', () => {
   let nuxt
@@ -38,15 +39,19 @@ describe('rfg-icon module, static', () => {
     nuxt = new Nuxt(config)
     await new Builder(nuxt).build()
     await nuxt.listen(port)
-  }, 60000)
+  })
 
   afterAll(async () => {
     await nuxt.close()
   })
 
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   test('check build output', () => {
-    expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/Retrieving favicons from realfavicongenerator api/))
-    expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/Finished saving favicons to static folder/))
+    expect(consola.info).toHaveBeenCalledWith(expect.stringMatching(/Retrieving favicons from realfavicongenerator api/))
+    expect(consola.success).toHaveBeenCalledWith(expect.stringMatching(/Finished saving favicons to static folder/))
   })
 
   test('icons exists on filesystem', () => {
@@ -67,7 +72,7 @@ describe('rfg-icon module, static', () => {
   test('static files are persistent after 1st build', async () => {
     await new Builder(nuxt).build()
 
-    expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/Static files enabled and exists, wont retrieve new favicons/))
+    expect(consola.info).toHaveBeenCalledWith(expect.stringMatching(/Static files enabled and exists, wont retrieve new favicons/))
   })
 
   test('icons are included in head', async () => {
@@ -86,8 +91,8 @@ describe('rfg-icon module, static', () => {
 
     await new Builder(nuxt).build()
 
-    expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/Static files exists but force is enabled/))
-    expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/Retrieving favicons from realfavicongenerator api/))
-    expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/Finished saving favicons to static folder/))
+    expect(consola.warn).toHaveBeenCalledWith(expect.stringMatching(/Static files exists but force is enabled/))
+    expect(consola.info).toHaveBeenCalledWith(expect.stringMatching(/Retrieving favicons from realfavicongenerator api/))
+    expect(consola.success).toHaveBeenCalledWith(expect.stringMatching(/Finished saving favicons to static folder/))
   })
 })

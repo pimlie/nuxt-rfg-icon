@@ -1,6 +1,7 @@
 node_modules
 .nuxt
 coverage
+.nyc_output
 test/fixture/static/icons
 test/fixture/static/favicon.ico
 yarn-error.log

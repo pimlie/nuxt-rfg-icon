@@ -1,6 +1,8 @@
-const diff = require('jest-diff')
+// const diff = require('jest-diff')
 
-expect.extend({
+jest.setTimeout(60000)
+
+/* expect.extend({
   toHaveBeenCalledWithMatch(received, expected) {
     if (!received.mock) {
       return {
@@ -66,21 +68,4 @@ expect.extend({
     }
   }
 })
-
-jest.mock('consola', () => {
-  const levels = [
-    'fatal', 'error', 'warn', 'log', 'info',
-    'start', 'success', 'ready', 'debug', 'trace'
-  ]
-
-  const consola = {
-    withScope: (scope) => {
-      return consola
-    }
-  }
-  for (const level of levels) {
-    consola[level] = jest.fn()
-  }
-
-  return consola
-})
+/**/
