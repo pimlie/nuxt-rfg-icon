@@ -1,6 +1,6 @@
 {
   "name": "nuxt-rfg-icon",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "license": "MIT",
   "description": "Nuxt.js module for creating favicons with RealFaviconGenerator api",
   "repository": "https://github.com/pimlie/nuxt-rfg-icon",
