@@ -1,5 +1,25 @@
 module.exports = {
-  setupTestFrameworkScriptFile: './test/utils/setup',
   testEnvironment: 'node',
-  collectCoverageFrom: ['lib/**']
+
+  expand: true,
+
+  setupFilesAfterEnv: ['./test/utils/setup'],
+
+  testPathIgnorePatterns: [
+    'node_modules'
+  ],
+
+  transformIgnorePatterns: [
+    'node_modules'
+  ],
+
+  transform: {
+    '^.+\\.js$': 'babel-jest'
+  },
+
+  moduleFileExtensions: [
+    'ts',
+    'js',
+    'json'
+  ]
 }
