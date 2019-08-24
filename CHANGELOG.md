@@ -1,6 +1,13 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [0.6.4](https://github.com/pimlie/nuxt-rfg-icon/compare/v0.6.3...v0.6.4) (2019-08-24)
+
+
+### Bug Fixes
+
+* html attribute parsing ([c6dd470](https://github.com/pimlie/nuxt-rfg-icon/commit/c6dd470))
 
 ## [0.6.3](https://github.com/pimlie/nuxt-rfg-icon/compare/v0.6.2...v0.6.3) (2019-03-21)
 
