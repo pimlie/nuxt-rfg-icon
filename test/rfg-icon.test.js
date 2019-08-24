@@ -88,8 +88,8 @@ describe('rfg-icon module, static', () => {
     const window = await nuxt.renderAndGetWindow(url('/'))
 
     const head = window.document.head.innerHTML
-    expect(head).toMatch('<meta data-n-head="true" name="msapplication-TileColor" content="')
-    expect(head).toMatch('<link data-n-head="true" rel="shortcut icon" href="/_favicons/favicon.ico">')
+    expect(head).toMatch('<meta data-n-head="ssr" name="msapplication-TileColor" content="')
+    expect(head).toMatch('<link data-n-head="ssr" rel="shortcut icon" href="/_favicons/favicon.ico">')
 
     const body = window.document.body.innerHTML
     expect(body).toContain('RFG Icon Test')
